@@ -17,8 +17,8 @@ function App() {
     event.preventDefault();
 
     if (newPost.title.trim() === "" || posts.some((curPost) => curPost.title === newPost.title)) {
-      const message = newPost.title.trim() === "" 
-        ? "Aggiungi un titolo" 
+      const message = newPost.title.trim() === ""
+        ? "Aggiungi un titolo"
         : "Titolo già presente";
       return alert(message);
     }
@@ -66,14 +66,49 @@ function App() {
 
           <label htmlFor="AuthorName">Nome dell'Autore</label>
           <input
-            type="text" 
+            type="text"
             placeholder="Nome dell'Autore"
             id="AuthorName"
             name="author"
             value={newPost.author}
             onChange={handleInputChange}
           />
-          
+
+          <label htmlFor="PostImage">Immagine del Post</label>
+          <input
+            type="text"
+            placeholder="URL Immagine del Post"
+            id="PostImage"
+            name="image"
+            value={newPost.image}
+            onChange={handleInputChange}
+          />
+
+          <label htmlFor="PostContent">Contenuto del Post</label>
+          <textarea
+            rows="3"
+            type="text"
+            placeholder="Contenuto del Post..."
+            id="PostContent"
+            name="content"
+            value={newPost.content}
+            onChange={handleInputChange}
+          ></textarea>
+
+          <label htmlFor="Category">Categoria</label>
+          <select
+            id="Category"
+            name="category"
+            value={newPost.category}
+            onChange={handleInputChange}
+          >
+            <option value="" selected disabled hidden>Seleziona una categoria</option>
+            <option value="Tecnologia">Tecnologia</option>
+            <option value="Scienze">Scienza</option>
+            <option value="Cultura">Cultura</option>
+            <option value="Sport">Sport</option>
+          </select>
+
           <button
             type="submit"
             className="btn submit"
@@ -82,33 +117,40 @@ function App() {
           </button>
         </form>
 
-      {posts.length > 0 ? (
-        <ul className="container row">
-          {posts.map((curPost) => (
-            <li 
-              key={curPost.id}
-              className="card"
-            >
-              <div className="uppercard">
-                <h2>{curPost.title}</h2>
-                <button
-                  className="btn remove"
-                  onClick={() => {removePost(curPost)}}
-                >
-                  <i className="fa-solid fa-trash"></i>
-                </button>
-              </div>
-              <div>
-                <span>{curPost.author || "Autore Sconosciuto"}</span>
-              </div>  
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="empty-list container row">
-          La tua lista è vuota! Aggiungi qualche Post!
-        </p>
-      )}
+        {posts.length > 0 ? (
+          <ul className="container row">
+            {posts.map((curPost) => (
+              <li
+                key={curPost.id}
+                className="card"
+              >
+                <div className="card-image">
+                  <img src={curPost.image} alt="L'immagine del Post" />
+                </div>
+                <div className="card-heading">
+                  <h2>{curPost.title}</h2>
+                  <button
+                    className="btn remove"
+                    onClick={() => { removePost(curPost) }}
+                  >
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+                <div className="card-content">
+                  <p>{curPost.content}</p>
+                </div>
+                <div className="card-footer">
+                  <span>{curPost.author || "Autore Sconosciuto"}</span>
+                  <span>{curPost.category}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="empty-list container row">
+            La tua lista è vuota! Aggiungi qualche Post!
+          </p>
+        )}
       </main>
     </>
   )
