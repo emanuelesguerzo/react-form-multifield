@@ -33,11 +33,12 @@ function App() {
   }
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value, type, checked } = event.target;
+    const newValue = type === "checkbox" ? checked : value;
 
     setNewPost((curPost) => ({
       ...curPost,
-      [name]: value,
+      [name]: newValue,
     }));
   };
 
@@ -109,6 +110,15 @@ function App() {
             <option value="Sport">Sport</option>
           </select>
 
+          <label htmlFor="PostState">Pubblica il Post</label>
+          <input
+            type="checkbox"
+            id="PostState"
+            name="state"
+            checked={newPost.state}
+            onChange={handleInputChange}
+          />
+
           <button
             type="submit"
             className="btn submit"
@@ -125,7 +135,9 @@ function App() {
                 className="card"
               >
                 <div className="card-image">
-                  <img src={curPost.image} alt="L'immagine del Post" />
+                  <img 
+                    src={curPost.image ? curPost.image : "https://placehold.co/600x400"}
+                    alt="L'immagine del Post" />
                 </div>
                 <div className="card-heading">
                   <h2>{curPost.title}</h2>
@@ -138,6 +150,7 @@ function App() {
                 </div>
                 <div className="card-content">
                   <p>{curPost.content}</p>
+                  <span>{curPost.state ? "Pubblicato" : "Bozza"}</span>
                 </div>
                 <div className="card-footer">
                   <span>{curPost.author || "Autore Sconosciuto"}</span>
