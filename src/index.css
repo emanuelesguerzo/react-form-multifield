@@ -1,0 +1,99 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+ul {
+  list-style-type: none;
+}
+
+/* COMMON */
+/* Layout */
+.container {
+  margin: 0 auto;
+  width: 80%; 
+}
+
+.row {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Header */
+header {
+  background-color: #ececec;
+  padding: 20px;
+}
+
+/* Form */
+label {
+  font-weight: bold;
+  font-style: italic;
+}
+
+input {
+  width: 50%;
+  padding: 5px;
+  margin: 20px 0;
+}
+
+.btn {
+  padding: 10px;
+  color: #ffffff;
+  border: 1px solid #000000;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.submit {
+  background-color: #4747f7;
+  border-radius: 10px;
+}
+
+.remove {
+  width: 40px;
+  height: 40px;
+  background-color: #ff0000;
+  border-radius: 50%;
+}
+
+.btn.submit:hover {
+  background-color: #3636d1; 
+}
+
+.btn.remove:hover {
+  background-color: #d60000; 
+}
+
+/* Card */
+.card {
+  width: 80%;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.uppercard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.empty-list {
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+span {
+  font-style: italic;
+}
