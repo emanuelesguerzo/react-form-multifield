@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const initialPostData = {
   title: "",
@@ -7,11 +7,28 @@ const initialPostData = {
   content: "",
   category: "",
   state: false,
+  tags: [],
 }
+
+const availableTags = [
+  "HTML",
+  "CSS",
+  "JavaScript",
+  "Express",
+  "Node",
+  "React",
+];
+
 
 function App() {
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState(initialPostData);
+  
+  useEffect(() => {
+    if (newPost.state) {
+      alert("Stai pubblicando un post!");
+    }
+  }, [newPost.state]);
 
   const handleNewPostSubmit = (event) => {
     event.preventDefault();
@@ -54,77 +71,129 @@ function App() {
       </header>
 
       <main>
-        <form action="" className="container row" onSubmit={handleNewPostSubmit}>
-          <label htmlFor="PostName">Titolo del Post</label>
-          <input
-            type="text"
-            placeholder="Titolo del Post"
-            id="PostName"
-            name="title"
-            value={newPost.title}
-            onChange={handleInputChange}
-          />
+        <form action="" className="container" onSubmit={handleNewPostSubmit}>
 
-          <label htmlFor="AuthorName">Nome dell'Autore</label>
-          <input
-            type="text"
-            placeholder="Nome dell'Autore"
-            id="AuthorName"
-            name="author"
-            value={newPost.author}
-            onChange={handleInputChange}
-          />
+          {/* Title Input */}
+          <div className="input post-title">
+            <label htmlFor="PostName">Titolo</label>
+            <input
+              type="text"
+              placeholder="Titolo del Post"
+              id="PostName"
+              name="title"
+              value={newPost.title}
+              onChange={handleInputChange}
+            />
+          </div>
 
-          <label htmlFor="PostImage">Immagine del Post</label>
-          <input
-            type="text"
-            placeholder="URL Immagine del Post"
-            id="PostImage"
-            name="image"
-            value={newPost.image}
-            onChange={handleInputChange}
-          />
+          {/* Author Input */}
+          <div className="input author-name">
+            <label htmlFor="AuthorName">Nome Autore</label>
+            <input
+              type="text"
+              placeholder="Nome dell'Autore"
+              id="AuthorName"
+              name="author"
+              value={newPost.author}
+              onChange={handleInputChange}
+            />
+          </div>
 
-          <label htmlFor="PostContent">Contenuto del Post</label>
-          <textarea
-            rows="3"
-            type="text"
-            placeholder="Contenuto del Post..."
-            id="PostContent"
-            name="content"
-            value={newPost.content}
-            onChange={handleInputChange}
-          ></textarea>
+          {/* Image Input */}
+          <div className=" input post-image">
+            <label htmlFor="PostImage">URL Immagine</label>
+            <input
+              type="text"
+              placeholder="URL Immagine del Post"
+              id="PostImage"
+              name="image"
+              value={newPost.image}
+              onChange={handleInputChange}
+            />
+          </div>
 
-          <label htmlFor="Category">Categoria</label>
-          <select
-            id="Category"
-            name="category"
-            value={newPost.category}
-            onChange={handleInputChange}
-          >
-            <option value="" selected disabled hidden>Seleziona una categoria</option>
-            <option value="Tecnologia">Tecnologia</option>
-            <option value="Scienze">Scienza</option>
-            <option value="Cultura">Cultura</option>
-            <option value="Sport">Sport</option>
-          </select>
+          {/* Category Select */}
+          <div className=" input category">
+            <label htmlFor="Category">Categoria</label>
+            <select
+              id="Category"
+              name="category"
+              value={newPost.category}
+              onChange={handleInputChange}
+            >
+              <option value="" selected disabled hidden>Seleziona una categoria</option>
+              <option value="News">News</option>
+              <option value="Update">Update</option>
+              <option value="Tutorial">Tutorial</option>
+              <option value="Tips">Tips</option>
+            </select>
+          </div>
 
-          <label htmlFor="PostState">Pubblica il Post</label>
-          <input
-            type="checkbox"
-            id="PostState"
-            name="state"
-            checked={newPost.state}
-            onChange={handleInputChange}
-          />
 
+          {/* Content */}
+          <div className="input post-content">
+            <label htmlFor="PostContent">Contenuto</label>
+            <textarea
+              rows="4"
+              type="text"
+              placeholder="Contenuto del Post..."
+              id="PostContent"
+              name="content"
+              value={newPost.content}
+              onChange={handleInputChange}
+            ></textarea>
+          </div>
+
+          {/* Tags Checkboxes */}
+          <div className=" input post-tags">
+            <label htmlFor="TagContainer">Tag</label>
+            <div className="tag-container" id="TagContainer">
+              {availableTags.map((curTag) => (
+                <div key={curTag} className="inputTag">
+                  <input
+                    className=""
+                    type="checkbox"
+                    id={curTag}
+                    name="tags"
+                    value={curTag}
+                    checked={newPost.tags.includes(curTag)}
+                    onChange={(event) => {
+                      const { value, checked } = event.target;
+
+                      setNewPost((curPost) => ({
+                        ...curPost,
+                        tags: checked
+                          ? [...curPost.tags, value]
+                          : curPost.tags.filter((curTag) => curTag !== value),
+                      }));
+                    }}
+                  />
+                  {curTag}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* State Checkbox */}
+          <div className="input post-state">
+            <label htmlFor="PostState">Pubblica</label>
+            <input
+              type="checkbox"
+              id="PostState"
+              name="state"
+              checked={newPost.state}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          {/* Submit Button */}
           <button
             type="submit"
             className="btn submit"
           >
             Crea Post
           </button>
+
         </form>
 
         {posts.length > 0 ? (
@@ -135,9 +204,20 @@ function App() {
                 className="card"
               >
                 <div className="card-image">
-                  <img 
+                  <img
                     src={curPost.image ? curPost.image : "https://placehold.co/600x400"}
                     alt="L'immagine del Post" />
+                </div>
+                <div className="tags-list">
+                  {curPost.tags.length > 0 &&
+                    curPost.tags.map((curTag) => (
+                      <span
+                        key={curTag}
+                        className={`tag ${curTag.toLowerCase()}`}
+                      >
+                        {curTag}
+                      </span>
+                    ))}
                 </div>
                 <div className="card-heading">
                   <h2>{curPost.title}</h2>
@@ -150,11 +230,17 @@ function App() {
                 </div>
                 <div className="card-content">
                   <p>{curPost.content}</p>
-                  <span>{curPost.state ? "Pubblicato" : "Bozza"}</span>
                 </div>
                 <div className="card-footer">
-                  <span>{curPost.author || "Autore Sconosciuto"}</span>
-                  <span>{curPost.category}</span>
+                  <div className="author">{curPost.author || "Autore Sconosciuto"}</div>
+                  <div className="publish">
+                    {curPost.state ? (
+                      <div><span className="check">✔</span> Pubblicato</div>
+                    ) : (
+                      <div><span className="cross">✘</span> Bozza</div>
+                    )}
+                  </div>
+                  <div className="category">{curPost.category}</div>
                 </div>
               </li>
             ))}
